@@ -18,7 +18,7 @@ defmodule Board do
     |> length()
   end
 
-  @spec width(list()) :: pos_integer()
+  @spec height(list()) :: pos_integer()
   def height(board) do
     length(board)
   end
