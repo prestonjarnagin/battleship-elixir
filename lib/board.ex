@@ -42,8 +42,7 @@ defmodule Board do
   @spec coordinate_within_bounds?(%{x: pos_integer(), y: pos_integer()}, list()) :: boolean()
   @spec coordinate_within_bounds?(coordinate(), list()) :: boolean()
   def coordinate_within_bounds?(coordinate, board) do
-    coordinate.x <= width(board)
-    coordinate.y <= height(board)
+    coordinate.x <= width(board) and coordinate.y <= height(board)
   end
 
   @spec get_cells_ship_will_cover(pos_integer(), %{x: pos_integer(), y: pos_integer()}, String.t()) :: list()
