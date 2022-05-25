@@ -26,7 +26,7 @@ defmodule Battleship do
 
     Board.place_ship(3, cell, orientation, board)
 
-    IO.puts(Renderer.draw)
+    IO.puts(Renderer.draw(board))
 
     IO.puts "Place Second Ship - 2 Cells Long"
     IO.puts "Do you want to place it horizontally or vertically? (h/v)"
