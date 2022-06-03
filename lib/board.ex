@@ -4,12 +4,7 @@ defmodule Board do
 
   @spec init(pos_integer(), pos_integer()) :: list()
   def init(w, h) do
-    Enum.map(1..h, fn i -> build_row([], w) end)
-  end
-
-  @spec build_row(list(), pos_integer()) :: list()
-  def build_row(board_in_progress, w) do
-    Enum.map(1..w, fn x -> nil end)
+    Enum.map(1..h, fn i -> Board.Row.build([], w) end)
   end
 
   @spec width(list()) :: pos_integer()
