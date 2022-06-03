@@ -25,9 +25,11 @@ defmodule Battleship do
 
   def ship_placement_phase(board) do
     details = prompt_for_ship_details(2) # TODO: LOOP until success
+    board = Board.place_ship(details.length, details.coordinate, details.orientation, board)
+    IO.puts(Renderer.draw(board))
 
-    Board.place_ship(details.length, details.coordinate, details.orientation, board)
-    |> IO.puts(Render.draw()board)
+    details = prompt_for_ship_details(3) # TODO: LOOP until success
+    board = Board.place_ship(details.length, details.coordinate, details.orientation, board)
     IO.puts(Renderer.draw(board))
   end
 
@@ -75,11 +77,11 @@ defmodule Battleship do
 
   @spec decode_coordinate(String.t()) :: %{x: pos_integer(), y: pos_integer()}
   def decode_coordinate(coordinate) do
-    [unconverted_x_coord | [y_coord]] = String.split(coordinate, "", trim: true)
+    [unconverted_y_coord | [x_coord]] = String.split(coordinate, "", trim: true)
 
-    <<partly_converted_x_coord::utf8>> = unconverted_x_coord
-    x_coord = partly_converted_x_coord - 64
+    <<partly_converted_y_coord::utf8>> = unconverted_y_coord
+    y_coord = partly_converted_y_coord - 64
 
-    %{x: x_coord, y: String.to_integer(y_coord)}
+    %{x: String.to_integer(x_coord), y: y_coord}
   end
 end
