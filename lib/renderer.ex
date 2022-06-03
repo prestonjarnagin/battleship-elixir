@@ -24,7 +24,7 @@ defmodule Renderer do
   def draw_row(row, index) do
     drawn = Enum.map(row, fn
       element ->
-        if element == nil, do: " . ", else: " @ "
+        if element == nil, do: " . ", else: " #{element} "
     end)
     |> List.to_string
 

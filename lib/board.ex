@@ -58,7 +58,7 @@ defmodule Board do
 
   def update_cell(coordinate, board) do
     old_row = Enum.at(board, coordinate.y - 1)
-    new_row = List.replace_at(old_row, coordinate.x - 1, "s")
+    new_row = List.replace_at(old_row, coordinate.x - 1, "O")
     List.replace_at(board, coordinate.y - 1, new_row)
   end
 
