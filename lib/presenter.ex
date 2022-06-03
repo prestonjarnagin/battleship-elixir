@@ -1,4 +1,9 @@
-defmodule Renderer do
+defmodule Presenter do
+  def puts(board) do
+    draw(board)
+    |>IO.puts()
+  end
+  
   def draw(board) do
     w = Board.width(board)
     header = draw_header(w)
@@ -7,11 +12,6 @@ defmodule Renderer do
     |> List.to_string
 
     header <> rows
-  end
-
-  def width(board) do
-    List.first(board)
-    |> length()
   end
 
   def draw_header(w) do
