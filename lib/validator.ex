@@ -10,7 +10,7 @@ defmodule Validator do
       letter = List.first(parts)
       number = List.last(parts)
 
-      letter_valid = Enum.member?(["a","b","c","d"], letter)
+      letter_valid = Enum.member?(["A","B","C","D"], letter)
       number_valid = Enum.member?(["1","2","3","4"], number)
 
       if letter_valid && number_valid, do: true, else: false

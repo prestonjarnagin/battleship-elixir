@@ -15,46 +15,71 @@ defmodule Battleship do
   def start do
     IO.puts "Battleship"
 
+    # TODO: Rules
+
     board = Board.init(4, 4)
     IO.puts(Renderer.draw(board))
 
-    IO.puts "Place First Ship - 3 Cells Long"
-    IO.puts "Do you want to place it horizontally or vertically? (h/v)"
+    ship_placement_phase(board)
+  end
 
-    orientation = gather_input()
-    cell = prompt_for_placement(orientation)
+  def ship_placement_phase(board) do
+    details = prompt_for_ship_details(2) # TODO: LOOP until success
 
-    Board.place_ship(3, cell, orientation, board)
-
+    Board.place_ship(details.length, details.coordinate, details.orientation, board)
+    |> IO.puts(Render.draw()board)
     IO.puts(Renderer.draw(board))
+  end
 
-    IO.puts "Place Second Ship - 2 Cells Long"
+  def prompt_for_ship_details(length) do
+    IO.puts "Place Ship - #{length} Cells Long"
     IO.puts "Do you want to place it horizontally or vertically? (h/v)"
 
-    # place_ship(2, cell, orientation)
-
     orientation = gather_input()
-    cell = prompt_for_placement(orientation)
+                  |> String.downcase
+
+    coordinate = prompt_for_placement(orientation)
+    |> decode_coordinate
+
+    %{orientation: orientation, length: length, coordinate: coordinate}
   end
 
   def gather_input do
     t = Task.async(fn -> IO.gets "---> " end)
     Task.await(t, :infinity)
     |> String.trim
-    |> String.downcase
+    |> String.upcase
   end
 
   def prompt_for_placement("v") do
     IO.puts "Choose coordinates."
     IO.puts "Your choice will be the top-most part of the ship"
     input = gather_input()
-    Validator.valid_coordinate?(input)
+    if Validator.valid_coordinate?(input) do
+      input
+    else
+      false
+    end
   end
 
   def prompt_for_placement("h") do
     IO.puts "Choose coordinates."
     IO.puts "Your choice will be the left-most part of the ship"
     input = gather_input()
-    Validator.valid_coordinate?(input)
+    if Validator.valid_coordinate?(input) do
+      input
+    else
+      false
+    end
+  end
+
+  @spec decode_coordinate(String.t()) :: %{x: pos_integer(), y: pos_integer()}
+  def decode_coordinate(coordinate) do
+    [unconverted_x_coord | [y_coord]] = String.split(coordinate, "", trim: true)
+
+    <<partly_converted_x_coord::utf8>> = unconverted_x_coord
+    x_coord = partly_converted_x_coord - 64
+
+    %{x: x_coord, y: String.to_integer(y_coord)}
   end
 end
