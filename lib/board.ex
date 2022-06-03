@@ -33,45 +33,29 @@ defmodule Board do
 
   def has_collision?(coordinates, board) do
     not Enum.all?(coordinates, fn coord ->
-      coordinate_available?(coord, board)
+      Board.Coordinate.available?(coord, board)
     end)
-  end
-
-  def coordinate_available?(coordinate, board) do
-    Enum.at(board, coordinate.y - 1)
-      |> Enum.at(coordinate.x - 1) == nil
   end
 
   def populate_board(coordinates, board) do
     [head | tail] = coordinates
 
     if Enum.empty?(tail) do
-      update_cell(head, board)
+      Board.Coordinate.update(head, board)
     else
       incoming = populate_board(tail, board)
-      Enum.zip_with(incoming, update_cell(head, board),
+      Enum.zip_with(incoming, Board.Coordinate.update(head, board),
         fn incoming_row, old_row ->
           Enum.zip_with(incoming_row, old_row, fn x, y -> x || y end)
       end)
     end
   end
 
-  def update_cell(coordinate, board) do
-    old_row = Enum.at(board, coordinate.y - 1)
-    new_row = List.replace_at(old_row, coordinate.x - 1, "O")
-    List.replace_at(board, coordinate.y - 1, new_row)
-  end
-
   @spec all_coordinates_within_bounds?(list(), list()) :: boolean()
   def all_coordinates_within_bounds?(coordinates, board) do
     Enum.all?(coordinates, fn coord ->
-      coordinate_within_bounds?(coord, board)
+      Board.Coordinate.within_bounds?(coord, board)
     end)
-  end
-
-  @spec coordinate_within_bounds?(coordinate(), list()) :: boolean()
-  def coordinate_within_bounds?(coordinate, board) do
-    coordinate.x <= width(board) and coordinate.y <= height(board)
   end
 
   @spec get_cells_ship_will_cover(pos_integer(), coordinate(), String.t()) :: list()

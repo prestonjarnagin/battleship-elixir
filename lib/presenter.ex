@@ -3,7 +3,7 @@ defmodule Presenter do
     draw(board)
     |>IO.puts()
   end
-  
+
   def draw(board) do
     w = Board.width(board)
     header = draw_header(w)
