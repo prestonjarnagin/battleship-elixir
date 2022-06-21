@@ -20,7 +20,12 @@ defmodule Battleship do
     board = Board.init(4, 4)
     Presenter.puts(board)
 
-    ship_placement_phase(board)
+    board = ship_placement_phase(board)
+
+    opponent_board = Board.init(4, 4)
+    opponent_board = setup_opponent(opponent_board)
+
+
   end
 
   def ship_placement_phase(board) do
@@ -31,6 +36,12 @@ defmodule Battleship do
     details = prompt_for_ship_details(3) # TODO: LOOP until success
     board = Board.place_ship(details.length, details.coordinate, details.orientation, board)
     Presenter.puts(board)
+
+    board
+  end
+
+  def setup_opponent(board) do
+    placement_details = Opponent.generate_ship_placement(board)
   end
 
   def prompt_for_ship_details(length) do
