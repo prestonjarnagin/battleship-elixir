@@ -18,6 +18,12 @@ defmodule Board do
     length(board)
   end
 
+  def empty?(board) do
+    Enum.all?(board, fn row ->
+      Enum.all?(row, fn coord -> coord == nil end)
+    end)
+  end
+
   def place_ship(ship_length, coordinate, orientation, board) do
     if valid_placement?(ship_length, coordinate, orientation, board) do
       populate_board(get_cells_ship_will_cover(ship_length, coordinate, orientation), board)
