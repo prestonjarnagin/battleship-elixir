@@ -18,30 +18,30 @@ defmodule Battleship do
     # TODO: Rules
 
     board = Board.init(4, 4)
+    ship_lengths = [2, 3]
     Presenter.puts(board)
 
-    board = ship_placement_phase(board)
+    board = ship_placement_phase(board, ship_lengths)
 
     opponent_board = Board.init(4, 4)
     opponent_board = setup_opponent(opponent_board)
 
+                require IEx; IEx.pry
 
   end
 
-  def ship_placement_phase(board) do
-    details = prompt_for_ship_details(2) # TODO: LOOP until success
-    board = Board.place_ship(details.length, details.coordinate, details.orientation, board)
-    Presenter.puts(board)
-
-    details = prompt_for_ship_details(3) # TODO: LOOP until success
-    board = Board.place_ship(details.length, details.coordinate, details.orientation, board)
-    Presenter.puts(board)
-
-    board
+  def ship_placement_phase(board, ship_lengths) do
+     Enum.reduce(ship_lengths, board, fn ship_length, acc ->
+      # TODO: Loop until successful ship placement
+      details = prompt_for_ship_details(ship_length)
+      b = Board.place_ship(details.length, details.coordinate, details.orientation, acc)
+      Presenter.puts(b)
+      b
+    end)
   end
 
-  def setup_opponent(board) do
-    placement_details = Opponent.generate_ship_placement(board)
+  def setup_opponent(board, ship_lengths) do
+    Opponent.place_ships(board, [2,3])
   end
 
   def prompt_for_ship_details(length) do
